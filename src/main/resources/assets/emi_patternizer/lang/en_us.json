@@ -1,5 +1,6 @@
 {
   "itemGroup.emi_patternizer": "EMI Patternizer",
   "key.emi_patternizer.patternize": "Encode Pattern",
-  "key.categories.emi_patternizer.category": "EMI Patternizer"
+  "key.categories.emi_patternizer.category": "EMI Patternizer",
+  "chat.emi_patternizer.loaded": "Loaded %d Item(s) from %d Pattern(s)"
 }

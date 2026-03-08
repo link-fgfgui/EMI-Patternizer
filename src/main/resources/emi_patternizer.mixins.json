@@ -6,10 +6,10 @@
   "mixins": [
   ],
   "client": [
-    "AEBaseMenuAccessor",
     "AbstractContainerScreenMixin",
+    "AEBaseMenuAccessor",
     "PatternEncodingTermMenuAccessor",
-    "PatternEncodingTermMenuMixin"
+    "PatternAccessTermScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

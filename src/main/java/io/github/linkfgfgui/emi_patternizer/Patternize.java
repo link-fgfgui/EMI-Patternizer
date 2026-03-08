@@ -32,20 +32,20 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Patternize {
-    long per = 60;
-    HashSet<String> EncodedItems = new HashSet<>();
+    static long per = 60;
+    public static HashSet<String> EncodedItems = new HashSet<>();
     public static volatile boolean operating = false;
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public boolean containsAllItems(EmiRecipe r) {
+    public static boolean containsAllItems(EmiRecipe r) {
         return containsAllItems(r.getOutputs());
     }
 
-    public boolean containsAllItems(List<EmiStack> stackList) {
+    public static boolean containsAllItems(List<EmiStack> stackList) {
         return (stackList.stream().allMatch(emiStack -> EncodedItems.contains(emiStack.getId().toString())));
     }
 
-    public void Encode(long initDelay, Minecraft minecraft, EmiRecipe recipe, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
+    public static void Encode(long initDelay, Minecraft minecraft, EmiRecipe recipe, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
         CompletableFuture.delayedExecutor(initDelay, TimeUnit.MILLISECONDS).execute(() -> {
             minecraft.execute(() -> {
 //                if (containsAllItems(recipe)) {
@@ -61,7 +61,7 @@ public class Patternize {
                     }
                     menu.encode();
                     recipe.getOutputs().forEach(emiStack -> EncodedItems.add(emiStack.getId().toString()));
-                    LOGGER.info("Operating: {}, EncodedItems: {}", operating, EncodedItems);
+                    LOGGER.debug("Operating: {}, EncodedItems: {}", operating, EncodedItems);
                 });
                 CompletableFuture.delayedExecutor(per, TimeUnit.MILLISECONDS).execute(() ->
                         minecraft.execute(() ->
@@ -77,7 +77,7 @@ public class Patternize {
         });
     }
 
-    public long CreateTasks(long delay, Minecraft minecraft, @Nullable List<MaterialNode> nodes, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
+    public static long CreateTasks(long delay, Minecraft minecraft, @Nullable List<MaterialNode> nodes, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
         if (nodes == null) {
             return delay;
         }
@@ -93,23 +93,15 @@ public class Patternize {
         return delay;
     }
 
-    @SubscribeEvent
-    public void onScreenOpening(ScreenEvent.Opening event) {
-        if (event.getScreen() instanceof PatternAccessTermScreen<?> screen) {
-            EncodedItems.clear();
-        }
-    }
-
-    @SubscribeEvent
-    public void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
+    public static void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
         if (!operating && Emi_patternizer.PATTERNIZE_MAPPING.get().isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode()))) {
             if (event.getScreen() instanceof PatternEncodingTermScreen<?> screen) {
-                LOGGER.info("Catched");
+                LOGGER.debug("Catched");
                 PatternEncodingTermMenu menu = screen.getMenu();
                 int blankPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.BLANK_PATTERN).getFirst().index;
                 int encodedPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.ENCODED_PATTERN).getFirst().index;
                 if (BoM.craftingMode) {
-                    LOGGER.info("BoM crafting");
+                    LOGGER.debug("BoM crafting");
                     Minecraft minecraft = Minecraft.getInstance();
                     LocalPlayer player = minecraft.player;
                     MultiPlayerGameMode gameMode = minecraft.gameMode;
@@ -117,12 +109,12 @@ public class Patternize {
 
                     MaterialNode goal = BoM.tree.goal;
                     operating = true;
-                    LOGGER.info(String.valueOf(operating));
+                    LOGGER.debug(String.valueOf(operating));
                     long maxDelay = CreateTasks(0, minecraft, List.of(goal), screen, menu, player, gameMode, encodedPatternSlot);
                     CompletableFuture.delayedExecutor(maxDelay + per, TimeUnit.MILLISECONDS).execute(() -> {
                         operating = false;
                         BoM.craftingMode=false;
-                        LOGGER.info(String.valueOf(operating));
+                        LOGGER.debug(String.valueOf(operating));
                     });
                 }
             } else {

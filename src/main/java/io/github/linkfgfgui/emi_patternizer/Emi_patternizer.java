@@ -35,12 +35,13 @@ public class Emi_patternizer {
     public Emi_patternizer(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::registerKeyMappings);
-        NeoForge.EVENT_BUS.register(new Patternize());
+        NeoForge.EVENT_BUS.addListener(Patternize::onKeyPressed);
+        NeoForge.EVENT_BUS.addListener(ReloadMemory::onScreenOpening);
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        LOGGER.info(Emi_patternizer.MODID + " has been initialized");
+        LOGGER.debug(Emi_patternizer.MODID + " has been initialized");
     }
 
     private void registerKeyMappings(final RegisterKeyMappingsEvent event) {

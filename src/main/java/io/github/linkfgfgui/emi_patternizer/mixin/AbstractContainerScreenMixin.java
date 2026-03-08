@@ -1,5 +1,6 @@
 package io.github.linkfgfgui.emi_patternizer.mixin;
 
+import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import com.mojang.logging.LogUtils;
 import io.github.linkfgfgui.emi_patternizer.Patternize;
@@ -17,12 +18,12 @@ public class AbstractContainerScreenMixin {
     @Inject(method = "onClose", at = @At("HEAD"), cancellable = true)
     private void preventScreenClose(CallbackInfo ci) {
         Screen currentScreen = (Screen) (Object) this;
-        if (currentScreen instanceof PatternAccessTermScreen<?> && Patternize.operating) {
+        if (currentScreen instanceof PatternEncodingTermScreen<?> && Patternize.operating) {
             ci.cancel();
-            LOGGER.info("try to cancel");
+            LOGGER.debug("try to cancel");
 
         }else{
-            LOGGER.info(currentScreen.toString());
+            LOGGER.debug(currentScreen.toString());
         }
     }
 }
