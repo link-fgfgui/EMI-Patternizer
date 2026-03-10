@@ -14,16 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
-    private static final Logger LOGGER = LogUtils.getLogger();
     @Inject(method = "onClose", at = @At("HEAD"), cancellable = true)
     private void preventScreenClose(CallbackInfo ci) {
         Screen currentScreen = (Screen) (Object) this;
         if (currentScreen instanceof PatternEncodingTermScreen<?> && Patternize.operating) {
             ci.cancel();
-            LOGGER.debug("try to cancel");
-
-        }else{
-            LOGGER.debug(currentScreen.toString());
         }
     }
 }

@@ -59,62 +59,6 @@ public class ReloadMemory {
                     }
                 });
             });
-
-
-//
-//            ((PatternAccessTermScreenAccessor) menu).getPinnedHosts().forEach(patternContainer ->
-//            {
-//
-//                patternContainer.getGrid().getNodes().forEach(node ->
-//                {
-//                    if (node instanceof IPatternAccessTermMenuHost) {
-//                        node.
-//                    }
-//                }
-//                );
-//            });
-
-
-//
-//            CompletableFuture.delayedExecutor(1000, TimeUnit.MILLISECONDS).execute(() -> minecraft.execute(() -> {
-//                IPatternAccessTermMenuHost node = ((PatternAccessTermMenuAccessor) menu).getHost();
-//                if (node == null) {
-//                    LOGGER.error("PatternAccessTermMenu node is null");
-//                    return;
-//                }
-//                LOGGER.info(node.toString());
-//            }));
-
-//            IGridNode node = ((PatternAccessTermMenuAccessor) menu).getHost().getGridNode();
-//            if (node == null) {
-//                LOGGER.error("PatternAccessTermMenu node is null");
-//                return;
-//            }
-//            IGrid grid = node.getGrid();
-//            ICraftingService craftingService = grid.getService(ICraftingService.class);
-//            if (craftingService == null) {
-//
-//
-//                LOGGER.error("craftingService is null");
-//                return;
-//            }
-//            craftingService.getCraftables(AEKeyFilter.none()).forEach(
-//                    key -> {
-//                        LOGGER.info(key.getId().toString());
-//                    }
-//            );
-
-
-//            // 获取所有提供样板的“提供者”
-//            for (ICraftingProvider provider : craftingService.getCraftables()) {
-//                // 在 1.21 中，直接获取该提供者当前可用的所有样板详情
-//                for (IPatternDetails pattern : provider.getAvailablePatterns()) {
-//                    // pattern 就是具体的样板信息（输入、输出等）
-//                    System.out.println("输出物品: " + pattern.getPrimaryOutput());
-//                }
-//            }
-
-
         }
     }
 }
