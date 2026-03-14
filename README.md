@@ -15,7 +15,8 @@ This mod lets you generate Applied Energistics 2 (AE2) patterns — crafting, pr
 5. Press the key you bound to start encoding.  
 
 **Showcase**  
-![Showcase](https://cdn.modrinth.com/data/7FoirOzn/images/c4b895666e0180ca14c2f82650b3fbdd774f1b94.gif)
+[Modrinth Gallery](https://modrinth.com/mod/emi-patternizer/gallery)  
+[CurseForge Gallery](https://www.curseforge.com/minecraft/mc-mods/emi-patternizer/gallery)
 
 **Tips**  
 1. The mod is in beta! please report bugs via the issue tracker.
