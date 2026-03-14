@@ -8,7 +8,6 @@
   "client": [
     "AbstractContainerScreenMixin",
     "AEBaseMenuAccessor",
-    "PatternEncodingTermMenuAccessor",
     "PatternAccessTermScreenAccessor"
   ],
   "injectors": {

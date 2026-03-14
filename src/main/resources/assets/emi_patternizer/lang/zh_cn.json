@@ -1,0 +1,10 @@
+{
+  "itemGroup.emi_patternizer": "EMI 快速编码",
+  "key.emi_patternizer.patternize": "编码样板",
+  "key.categories.emi_patternizer.category": "EMI 快速编码",
+  "chat.emi_patternizer.loaded": "从%2$d个样板中加载了%1$d种物品",
+  "emi_patternizer.config.delay1": "每次点击后的延迟",
+  "emi_patternizer.config.delay2": "每个样板编码完成后的额外延迟",
+  "emi_patternizer.config.delay3": "读取样板前的延迟（单位：毫秒）",
+  "emi_patternizer.config.playsound": "转移配方后播放音效"
+}

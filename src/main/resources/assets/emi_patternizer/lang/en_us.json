@@ -1,6 +1,10 @@
 {
   "itemGroup.emi_patternizer": "EMI Patternizer",
-  "key.emi_patternizer.patternize": "Encode Pattern",
+  "key.emi_patternizer.patternize": "Encode Patterns",
   "key.categories.emi_patternizer.category": "EMI Patternizer",
-  "chat.emi_patternizer.loaded": "Loaded %d Item(s) from %d Pattern(s)"
+  "chat.emi_patternizer.loaded": "Loaded %d Item(s) from %d Pattern(s)",
+  "emi_patternizer.config.delay1": "Delay per click",
+  "emi_patternizer.config.delay2": "Additional delay after 3 clicks",
+  "emi_patternizer.config.delay3": "Delay before read patterns from terminal (Unit: Millisecond)",
+  "emi_patternizer.config.playsound": "Play a sound after recipe fill"
 }

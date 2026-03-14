@@ -1,12 +1,9 @@
 package io.github.linkfgfgui.emi_patternizer.mixin;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
-import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
-import com.mojang.logging.LogUtils;
 import io.github.linkfgfgui.emi_patternizer.Patternize;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

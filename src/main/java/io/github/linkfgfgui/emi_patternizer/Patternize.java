@@ -1,12 +1,10 @@
 package io.github.linkfgfgui.emi_patternizer;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
-import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
-import dev.emi.emi.api.EmiApi;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.stack.EmiStack;
@@ -20,7 +18,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.ClickType;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -32,7 +29,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Patternize {
-    static long per = 60;
+    static long delayPerOperation;
+    static long delayAdditionalPerPattern;
+    static boolean isPlaySound;
     public static HashSet<String> EncodedItems = new HashSet<>();
     public static volatile boolean operating = false;
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -49,14 +48,15 @@ public class Patternize {
         CompletableFuture.delayedExecutor(initDelay, TimeUnit.MILLISECONDS).execute(() -> {
             minecraft.execute(() -> {
                 EmiRecipeFiller.performFill(recipe, screen, EmiCraftContext.Type.FILL_BUTTON, EmiCraftContext.Destination.NONE, 1);
-                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                if (isPlaySound) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                }
             });
-            CompletableFuture.delayedExecutor(per, TimeUnit.MILLISECONDS).execute(() -> {
+            CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
                     menu.encode();
-                    LOGGER.debug("Operating: {}, EncodedItems: {}", operating, EncodedItems);
                 });
-                CompletableFuture.delayedExecutor(per, TimeUnit.MILLISECONDS).execute(() ->
+                CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() ->
                         minecraft.execute(() ->
                                 gameMode.handleInventoryMouseClick(
                                         menu.containerId,
@@ -78,7 +78,7 @@ public class Patternize {
             if (node.recipe != null && node.recipe.getId() != null && !containsAllItems(node.recipe)) {
                 Encode(delay, minecraft, node.recipe, screen, menu, player, gameMode, encodedPatternSlot);
                 node.recipe.getOutputs().forEach(emiStack -> EncodedItems.add(emiStack.getId().toString()));
-                delay += (3 * per + 20);
+                delay += (3 * delayPerOperation + delayAdditionalPerPattern);
             }
             if (node.children != null) {
                 delay = CreateTasks(delay, minecraft, node.children, screen, menu, player, gameMode, encodedPatternSlot);
@@ -87,27 +87,30 @@ public class Patternize {
         return delay;
     }
 
+    public static void LoadConfig() {
+        delayPerOperation = Config.DELAY_PER_OPERATION.get();
+        delayAdditionalPerPattern = Config.DELAY_ADDITIONAL_PER_PATTERN.get();
+        isPlaySound = Config.IS_PLAY_SOUND.get();
+    }
+
     public static void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
         if (!operating && Emi_patternizer.PATTERNIZE_MAPPING.get().isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode()))) {
             if (event.getScreen() instanceof PatternEncodingTermScreen<?> screen) {
-                LOGGER.debug("Catched");
                 PatternEncodingTermMenu menu = screen.getMenu();
 //                int blankPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.BLANK_PATTERN).getFirst().index;
                 int encodedPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.ENCODED_PATTERN).getFirst().index;
-                if (BoM.craftingMode) {
-                    LOGGER.debug("BoM crafting");
+                if (BoM.craftingMode && !operating) {
+                    LoadConfig();
                     Minecraft minecraft = Minecraft.getInstance();
                     LocalPlayer player = minecraft.player;
                     MultiPlayerGameMode gameMode = minecraft.gameMode;
-
-
                     MaterialNode goal = BoM.tree.goal;
                     operating = true;
                     LOGGER.debug("operating started");
                     long maxDelay = CreateTasks(0, minecraft, List.of(goal), screen, menu, player, gameMode, encodedPatternSlot);
-                    CompletableFuture.delayedExecutor(maxDelay + per, TimeUnit.MILLISECONDS).execute(() -> {
+                    CompletableFuture.delayedExecutor(maxDelay + delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                         operating = false;
-                        BoM.craftingMode=false;
+                        BoM.craftingMode = false;
                         LOGGER.debug("operating finished");
                     });
                 }
