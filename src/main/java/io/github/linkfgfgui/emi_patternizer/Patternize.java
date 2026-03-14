@@ -19,22 +19,24 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.ClickType;
 import net.neoforged.neoforge.client.event.ScreenEvent;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 
 public class Patternize {
+    private static final Logger LOGGER = LogUtils.getLogger();
+    public static HashSet<String> EncodedItems = new HashSet<>();
+    public static volatile boolean operating = false;
     static long delayPerOperation;
     static long delayAdditionalPerPattern;
     static boolean isPlaySound;
-    public static HashSet<String> EncodedItems = new HashSet<>();
-    public static volatile boolean operating = false;
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static boolean containsAllItems(EmiRecipe r) {
         return containsAllItems(r.getOutputs());
@@ -70,21 +72,13 @@ public class Patternize {
         });
     }
 
-    public static long CreateTasks(long delay, Minecraft minecraft, @Nullable List<MaterialNode> nodes, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
-        if (nodes == null) {
-            return delay;
-        }
-        for (MaterialNode node : nodes) {
-            if (node.recipe != null && node.recipe.getId() != null && !containsAllItems(node.recipe)) {
-                Encode(delay, minecraft, node.recipe, screen, menu, player, gameMode, encodedPatternSlot);
-                node.recipe.getOutputs().forEach(emiStack -> EncodedItems.add(emiStack.getId().toString()));
-                delay += (3 * delayPerOperation + delayAdditionalPerPattern);
-            }
-            if (node.children != null) {
-                delay = CreateTasks(delay, minecraft, node.children, screen, menu, player, gameMode, encodedPatternSlot);
-            }
-        }
-        return delay;
+    public static Stream<MaterialNode> streamTree(MaterialNode node) {
+        if (node == null) return Stream.empty();
+
+        return Stream.concat(
+                Stream.of(node),
+                node.children == null ? Stream.empty() : node.children.stream().flatMap(Patternize::streamTree)
+        );
     }
 
     public static void LoadConfig() {
@@ -107,8 +101,24 @@ public class Patternize {
                     MaterialNode goal = BoM.tree.goal;
                     operating = true;
                     LOGGER.debug("operating started");
-                    long maxDelay = CreateTasks(0, minecraft, List.of(goal), screen, menu, player, gameMode, encodedPatternSlot);
-                    CompletableFuture.delayedExecutor(maxDelay + delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
+                    AtomicLong maxDelay = new AtomicLong(0);
+                    Stream.of(goal)
+                            .flatMap(Patternize::streamTree)
+                            .sorted(Comparator.comparing(node -> {
+                                if (node.recipe != null) {
+                                    return node.recipe.getCategory().id.toString();
+                                } else {
+                                    return "null";
+                                }
+                            }))
+                            .forEachOrdered(node -> {
+                                if (node.recipe != null && node.recipe.getId() != null && !containsAllItems(node.recipe)) {
+                                    Encode(maxDelay.get(), minecraft, node.recipe, screen, menu, player, gameMode, encodedPatternSlot);
+                                    node.recipe.getOutputs().forEach(emiStack -> EncodedItems.add(emiStack.getId().toString()));
+                                    maxDelay.addAndGet(3 * delayPerOperation + delayAdditionalPerPattern);
+                                }
+                            });
+                    CompletableFuture.delayedExecutor(maxDelay.get() + delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                         operating = false;
                         BoM.craftingMode = false;
                         LOGGER.debug("operating finished");
