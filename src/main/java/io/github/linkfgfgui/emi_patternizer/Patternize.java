@@ -1,5 +1,6 @@
 package io.github.linkfgfgui.emi_patternizer;
 
+import appeng.client.gui.WidgetContainer;
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.PatternEncodingTermMenu;
@@ -12,7 +13,11 @@ import dev.emi.emi.bom.BoM;
 import dev.emi.emi.bom.MaterialNode;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import io.github.linkfgfgui.emi_patternizer.mixin.AEBaseMenuAccessor;
+import io.github.linkfgfgui.emi_patternizer.mixin.AEBaseScreenAccessor;
+import io.github.linkfgfgui.emi_patternizer.mixin.WidgetContainerAccessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -37,6 +42,7 @@ public class Patternize {
     static long delayPerOperation;
     static long delayAdditionalPerPattern;
     static boolean isPlaySound;
+    static boolean isSimulateClick;
 
     public static boolean containsAllItems(EmiRecipe r) {
         return containsAllItems(r.getOutputs());
@@ -56,7 +62,15 @@ public class Patternize {
             });
             CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
-                    menu.encode();
+                    if (isSimulateClick) {
+                        WidgetContainer widgets = ((AEBaseScreenAccessor) screen).getWidgets();
+                        AbstractWidget widget = ((WidgetContainerAccessor) widgets).getWidgets().get("encodePattern");
+                        if (widget instanceof Button but) {
+                            but.onPress();
+                        }
+                    } else {
+                        menu.encode();
+                    }
                 });
                 CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() ->
                         minecraft.execute(() ->
@@ -85,6 +99,7 @@ public class Patternize {
         delayPerOperation = Config.DELAY_PER_OPERATION.get();
         delayAdditionalPerPattern = Config.DELAY_ADDITIONAL_PER_PATTERN.get();
         isPlaySound = Config.IS_PLAY_SOUND.get();
+        isSimulateClick = Config.IS_SIMULATE_CLICK.get();
     }
 
     public static void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
