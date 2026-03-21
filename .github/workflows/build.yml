@@ -16,6 +16,9 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: build 
         run: |
           chmod +x ./gradlew
@@ -26,7 +29,6 @@ jobs:
         with:
           path: build/libs/*
           archive: false
-
 
       - name: publish
         if: startsWith(github.ref, 'refs/tags/')
