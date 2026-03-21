@@ -6,5 +6,6 @@
   "emi_patternizer.config.delay1": "Delay per click",
   "emi_patternizer.config.delay2": "Additional delay after 3 clicks",
   "emi_patternizer.config.delay3": "Delay before read patterns from terminal (Unit: Millisecond)",
-  "emi_patternizer.config.playsound": "Play a sound after recipe fill"
+  "emi_patternizer.config.playsound": "Play a sound after recipe fill",
+  "emi_patternizer.config.simulate": "Whether to simulate a encode button click"
 }
