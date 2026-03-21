@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.HashMap;
 
-@Mixin(PatternAccessTermScreen.class)
+@Mixin(value = PatternAccessTermScreen.class, remap = false)
 public interface PatternAccessTermScreenAccessor {
     @Accessor("byId")
     HashMap<Long, PatternContainerRecord> getById();

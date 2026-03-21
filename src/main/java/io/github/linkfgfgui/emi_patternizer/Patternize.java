@@ -18,7 +18,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.ClickType;
-import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import org.slf4j.Logger;
 
 import java.util.Comparator;
@@ -87,12 +87,12 @@ public class Patternize {
         isPlaySound = Config.IS_PLAY_SOUND.get();
     }
 
-    public static void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
+    public static void onKeyPressed(ScreenEvent.KeyPressed event) {
         if (!operating && Emi_patternizer.PATTERNIZE_MAPPING.get().isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode()))) {
             if (event.getScreen() instanceof PatternEncodingTermScreen<?> screen) {
                 PatternEncodingTermMenu menu = screen.getMenu();
 //                int blankPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.BLANK_PATTERN).getFirst().index;
-                int encodedPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.ENCODED_PATTERN).getFirst().index;
+                int encodedPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.ENCODED_PATTERN).get(0).index;
                 if (BoM.craftingMode && !operating) {
                     LoadConfig();
                     Minecraft minecraft = Minecraft.getInstance();

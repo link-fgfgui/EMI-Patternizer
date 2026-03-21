@@ -8,8 +8,9 @@ import io.github.linkfgfgui.emi_patternizer.mixin.PatternAccessTermScreenAccesso
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -26,18 +27,18 @@ public class ReloadMemory {
             EncodedItems.clear();
             Minecraft minecraft = Minecraft.getInstance();
             Level level = minecraft.level;
-            delayBeforeRead=Config.DELAY_BEFORE_READ.get();
+            delayBeforeRead = Config.DELAY_BEFORE_READ.get();
             CompletableFuture.delayedExecutor(delayBeforeRead, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
                     PatternCount = 0;
                     Collection<PatternContainerRecord> patternContainerRecordSet = ((PatternAccessTermScreenAccessor) screen).getById().values();
                     for (PatternContainerRecord entry : patternContainerRecordSet) {
-                        entry.getInventory().toItemContainerContents().stream().forEach((item) -> {
+                        entry.getInventory().forEach((item) -> {
                             IPatternDetails details = PatternDetailsHelper.decodePattern(item, level);
                             PatternCount++;
                             if (details == null) {
                             } else {
-                                details.getOutputs().forEach(
+                                Arrays.stream(details.getOutputs()).forEach(
                                         genericStack -> {
                                             EncodedItems.add(genericStack.what().getId().toString());
                                         }

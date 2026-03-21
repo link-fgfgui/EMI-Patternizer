@@ -10,10 +10,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v6
 
-      - name: setup jdk 21
+      - name: setup jdk 17
         uses: actions/setup-java@v5
         with:
-          java-version: 21
+          java-version: 17
           distribution: 'temurin'
 
       - name: build 
@@ -26,13 +26,3 @@ jobs:
         with:
           path: build/libs/*
           archive: false
-
-
-      - name: publish
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: apehum/mc-publish@v1.2
-        with:
-          modrinth-id: 7FoirOzn
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          game-versions: 1.21.1

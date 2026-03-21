@@ -7,7 +7,7 @@ import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(AEBaseMenu.class)
+@Mixin(value = AEBaseMenu.class, remap = false)
 public interface AEBaseMenuAccessor {
     @Accessor("slotsBySemantic")
     ArrayListMultimap<SlotSemantic, Slot> getSlotsBySemantic();
