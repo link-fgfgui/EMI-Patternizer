@@ -46,10 +46,9 @@ public interface Api {
         }
         return false;
     }
-
     static boolean isValidAccessScreen(Screen screen) {
         if (INTERGRATED.AE2) {
-            return isInstanceOf(screen, "appeng.client.gui.me.items.PatternAccessTermScreen");
+            return isInstanceOf(screen, "appeng.client.gui.me.patternaccess.PatternAccessTermScreen");
         } else if (INTERGRATED.RS) {
             return isInstanceOf(screen, "com.refinedmods.refinedstorage.common.autocrafting.autocraftermanager.AutocrafterManagerScreen");
         }
