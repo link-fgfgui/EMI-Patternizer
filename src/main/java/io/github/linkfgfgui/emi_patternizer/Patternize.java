@@ -1,10 +1,8 @@
 package io.github.linkfgfgui.emi_patternizer;
 
 import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
-import appeng.menu.me.items.PatternEncodingTermMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -29,7 +27,6 @@ import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -64,7 +61,7 @@ public class Patternize {
             });
             CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
-                    if(encodeMethod!=null){
+                    if (encodeMethod != null) {
                         callEncode.run();
                     }
                 });
@@ -113,22 +110,22 @@ public class Patternize {
                     LocalPlayer player = minecraft.player;
                     MultiPlayerGameMode gameMode = minecraft.gameMode;
                     MaterialNode goal = BoM.tree.goal;
-                    encodeMethod=null;
+                    encodeMethod = null;
                     try {
                         // AE2 Pattern Workstation(1462173) Compatibility
-                        encodeMethod=menu.getClass().getMethod("encode", Long.class);
+                        encodeMethod = menu.getClass().getMethod("encode", Long.class);
                         encodedPatternSlot = null;
-                        callEncode=()->{
+                        callEncode = () -> {
                             try {
-                                encodeMethod.invoke(menu,0L);
+                                encodeMethod.invoke(menu, 0L);
                             } catch (IllegalAccessException | InvocationTargetException e01) {
                                 LOGGER.error(e01.getMessage());
                             }
                         };
                     } catch (NoSuchMethodException e1) {
-                        try{
-                            encodeMethod=menu.getClass().getMethod("encode");
-                            callEncode=()->{
+                        try {
+                            encodeMethod = menu.getClass().getMethod("encode");
+                            callEncode = () -> {
                                 try {
                                     encodeMethod.invoke(menu);
                                 } catch (IllegalAccessException | InvocationTargetException e11) {
