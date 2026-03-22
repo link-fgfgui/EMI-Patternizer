@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 @Mod(value = Emi_patternizer.MODID, dist = Dist.CLIENT)
 public class Emi_patternizer {
     public static final String MODID = "emi_patternizer";
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Lazy<KeyMapping> PATTERNIZE_MAPPING = Lazy.of(() -> new KeyMapping(
             "key.emi_patternizer.patternize",
             KeyConflictContext.GUI,
@@ -29,6 +28,7 @@ public class Emi_patternizer {
             GLFW.GLFW_KEY_N,
             "key.categories.emi_patternizer.category"
     ));
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public Emi_patternizer(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::clientSetup);

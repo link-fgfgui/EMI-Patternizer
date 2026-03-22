@@ -3,14 +3,17 @@
   "minVersion": "0.8",
   "package": "io.github.linkfgfgui.emi_patternizer.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "io.github.linkfgfgui.emi_patternizer.mixin.MixinPlugin",
   "mixins": [
   ],
   "client": [
     "AbstractContainerScreenMixin",
-    "AEBaseMenuAccessor",
-    "AEBaseScreenAccessor",
-    "WidgetContainerAccessor",
-    "PatternAccessTermScreenAccessor"
+    "ae2.AEBaseMenuAccessor",
+    "ae2.AEBaseScreenAccessor",
+    "ae2.PatternAccessTermScreenAccessor",
+    "refinedstorage.PatternGridContainerMenuAccessor",
+    "refinedstorage.PatternGridScreenAccessor",
+    "refinedstorage.AutocrafterManagerContainerMenuAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

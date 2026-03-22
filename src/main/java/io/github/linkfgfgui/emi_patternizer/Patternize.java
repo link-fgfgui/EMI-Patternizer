@@ -1,9 +1,5 @@
 package io.github.linkfgfgui.emi_patternizer;
 
-import appeng.client.gui.WidgetContainer;
-import appeng.client.gui.me.items.PatternEncodingTermScreen;
-import appeng.menu.SlotSemantics;
-import appeng.menu.me.items.PatternEncodingTermMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -12,16 +8,15 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.bom.BoM;
 import dev.emi.emi.bom.MaterialNode;
 import dev.emi.emi.registry.EmiRecipeFiller;
-import io.github.linkfgfgui.emi_patternizer.mixin.AEBaseMenuAccessor;
-import io.github.linkfgfgui.emi_patternizer.mixin.AEBaseScreenAccessor;
-import io.github.linkfgfgui.emi_patternizer.mixin.WidgetContainerAccessor;
+import io.github.linkfgfgui.emi_patternizer.intergrated.Api;
+import io.github.linkfgfgui.emi_patternizer.intergrated.INTERGRATED;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.slf4j.Logger;
@@ -52,7 +47,15 @@ public class Patternize {
         return (stackList.stream().allMatch(emiStack -> EncodedItems.contains(emiStack.getId().toString())));
     }
 
-    public static void Encode(long initDelay, Minecraft minecraft, EmiRecipe recipe, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
+    public static void Encode(long initDelay,
+                              Minecraft minecraft,
+                              EmiRecipe recipe,
+                              AbstractContainerScreen<?> screen,
+                              AbstractContainerMenu menu,
+                              LocalPlayer player,
+                              MultiPlayerGameMode gameMode,
+                              int encodedPatternSlot,
+                              Api api) {
         CompletableFuture.delayedExecutor(initDelay, TimeUnit.MILLISECONDS).execute(() -> {
             minecraft.execute(() -> {
                 EmiRecipeFiller.performFill(recipe, screen, EmiCraftContext.Type.FILL_BUTTON, EmiCraftContext.Destination.NONE, 1);
@@ -62,15 +65,7 @@ public class Patternize {
             });
             CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
-                    if (isSimulateClick) {
-                        WidgetContainer widgets = ((AEBaseScreenAccessor) screen).getWidgets();
-                        AbstractWidget widget = ((WidgetContainerAccessor) widgets).getWidgets().get("encodePattern");
-                        if (widget instanceof Button but) {
-                            but.onPress();
-                        }
-                    } else {
-                        menu.encode();
-                    }
+                    api.encode(isSimulateClick);
                 });
                 CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() ->
                         minecraft.execute(() ->
@@ -104,10 +99,11 @@ public class Patternize {
 
     public static void onKeyPressed(ScreenEvent.KeyPressed.Post event) {
         if (!operating && Emi_patternizer.PATTERNIZE_MAPPING.get().isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode()))) {
-            if (event.getScreen() instanceof PatternEncodingTermScreen<?> screen) {
-                PatternEncodingTermMenu menu = screen.getMenu();
-//                int blankPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.BLANK_PATTERN).getFirst().index;
-                int encodedPatternSlot = ((AEBaseMenuAccessor) menu).getSlotsBySemantic().get(SlotSemantics.ENCODED_PATTERN).getFirst().index;
+            if (Api.isValidEncodingScreen(event.getScreen())) {
+                AbstractContainerScreen<?> screen = (AbstractContainerScreen<?>) event.getScreen();
+                AbstractContainerMenu menu = screen.getMenu();
+                Api api = Api.getApi(screen);
+                int encodedPatternSlot = api.getEncodedPatternSlot();
                 if (BoM.craftingMode && !operating) {
                     LoadConfig();
                     Minecraft minecraft = Minecraft.getInstance();
@@ -128,7 +124,15 @@ public class Patternize {
                             }))
                             .forEachOrdered(node -> {
                                 if (node.recipe != null && node.recipe.getId() != null && !containsAllItems(node.recipe)) {
-                                    Encode(maxDelay.get(), minecraft, node.recipe, screen, menu, player, gameMode, encodedPatternSlot);
+                                    List<EmiStack> output = node.recipe.getOutputs();
+                                    if (INTERGRATED.RS) {
+                                        for (EmiStack emiStack : output) {
+                                            if (emiStack.getItemStack().isEmpty()) {
+                                                return;
+                                            }
+                                        }
+                                    }
+                                    Encode(maxDelay.get(), minecraft, node.recipe, screen, menu, player, gameMode, encodedPatternSlot, api);
                                     node.recipe.getOutputs().forEach(emiStack -> EncodedItems.add(emiStack.getId().toString()));
                                     maxDelay.addAndGet(3 * delayPerOperation + delayAdditionalPerPattern);
                                 }

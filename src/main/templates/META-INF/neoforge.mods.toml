@@ -74,9 +74,17 @@ side = "CLIENT"
 
 [[dependencies."${mod_id}"]]
 modId = "ae2"
-type = "required"
+type = "optional"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange = "[${ae2_version},)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies."${mod_id}"]]
+modId = "refinedstorage_emi_integration"
+type = "optional"
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange = "[${refinedstorage_emi_integration_version},)"
 ordering = "AFTER"
 side = "CLIENT"
 

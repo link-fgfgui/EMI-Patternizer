@@ -1,7 +1,7 @@
 package io.github.linkfgfgui.emi_patternizer.mixin;
 
-import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import io.github.linkfgfgui.emi_patternizer.Patternize;
+import io.github.linkfgfgui.emi_patternizer.intergrated.Api;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public class AbstractContainerScreenMixin {
     @Inject(method = "onClose", at = @At("HEAD"), cancellable = true)
     private void preventScreenClose(CallbackInfo ci) {
         Screen currentScreen = (Screen) (Object) this;
-        if (currentScreen instanceof PatternEncodingTermScreen<?> && Patternize.operating) {
+        if (Api.isInstanceOf(currentScreen, "appeng.client.gui.me.items.PatternEncodingTermScreen") && Patternize.operating) {
             ci.cancel();
         }
     }

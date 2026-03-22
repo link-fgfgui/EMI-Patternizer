@@ -15,6 +15,25 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+    maven {
+        url "https://cursemaven.com"
+    }
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage2")
+        credentials {
+            username = "link-fgfgui"
+            password = System.getenv("GITHUB_MAVEN_PAT")
+        }
+    }
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage-emi-integration")
+        credentials {
+            username = "link-fgfgui"
+            password = System.getenv("GITHUB_MAVEN_PAT")
+        }
+    }
 }
 
 base {
@@ -101,8 +120,14 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
-    implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    compileOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "dev.emi:emi-neoforge:${emi_version}"
+    implementation "com.refinedmods.refinedstorage:refinedstorage-emi-integration-neoforge:${refinedstorage_emi_integration_version}"
+    implementation "com.refinedmods.refinedstorage:refinedstorage-neoforge:${refinedstorage_version}"
+
+    runtimeOnly "curse.maven:powah-rearchitected-633483:7503293"
+    runtimeOnly "curse.maven:cloth-config-348521:5729127"
+    runtimeOnly "curse.maven:guideme-1173950:7127444"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -121,6 +146,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              mod_description        : mod_description,
                              ae2_version            : ae2_version,
                              emi_version            : emi_version,
+                             refinedstorage_version            : refinedstorage_version,
+                             refinedstorage_emi_integration_version            : refinedstorage_emi_integration_version,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
