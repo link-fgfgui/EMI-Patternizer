@@ -9,7 +9,6 @@ import dev.emi.emi.bom.BoM;
 import dev.emi.emi.bom.MaterialNode;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import io.github.linkfgfgui.emi_patternizer.intergrated.Api;
-import io.github.linkfgfgui.emi_patternizer.intergrated.INTERGRATED;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -58,8 +57,8 @@ public class Patternize {
                               Api api) {
         CompletableFuture.delayedExecutor(initDelay, TimeUnit.MILLISECONDS).execute(() -> {
             minecraft.execute(() -> {
-                EmiRecipeFiller.performFill(recipe, screen, EmiCraftContext.Type.FILL_BUTTON, EmiCraftContext.Destination.NONE, 1);
-                if (isPlaySound) {
+                boolean fillResult = EmiRecipeFiller.performFill(recipe, screen, EmiCraftContext.Type.FILL_BUTTON, EmiCraftContext.Destination.NONE, 1);
+                if (isPlaySound && fillResult) {
                     minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                 }
             });
@@ -125,7 +124,7 @@ public class Patternize {
                             .forEachOrdered(node -> {
                                 if (node.recipe != null && node.recipe.getId() != null && !containsAllItems(node.recipe)) {
                                     List<EmiStack> output = node.recipe.getOutputs();
-                                    if (INTERGRATED.RS) {
+                                    if (Api.INTEGRATED.RS) {
                                         for (EmiStack emiStack : output) {
                                             if (emiStack.getItemStack().isEmpty()) {
                                                 return;

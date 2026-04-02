@@ -19,19 +19,10 @@ repositories {
         url "https://cursemaven.com"
     }
     maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage2")
-        credentials {
-            username = "link-fgfgui"
-            password = System.getenv("GITHUB_MAVEN_PAT")
-        }
-    }
-    maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage-emi-integration")
-        credentials {
-            username = "link-fgfgui"
-            password = System.getenv("GITHUB_MAVEN_PAT")
+        name = "Refined Storage"
+        url = uri("https://maven.creeperhost.net")
+        content {
+            includeGroup("com.refinedmods.refinedstorage")
         }
     }
 }
