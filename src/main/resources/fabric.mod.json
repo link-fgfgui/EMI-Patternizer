@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "emi_patternizer",
+  "version": "${version}",
+  "name": "EMI Patternizer",
+  "description": "Automatically Encoding Patterns from the EMI Recipe Tree.",
+  "authors": ["link-fgfgui"],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/emi-patternizer",
+    "sources": "https://github.com/link-fgfgui/EMI-Patternizer",
+    "issues": "https://github.com/link-fgfgui/EMI-Patternizer/issues"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/emi_patternizer/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.linkfgfgui.emi_patternizer.client.Emi_patternizer"
+    ]
+  },
+  "mixins": [
+    "emi_patternizer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

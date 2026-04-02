@@ -1,9 +1,8 @@
-package io.github.linkfgfgui.emi_patternizer.mixin;
+package io.github.linkfgfgui.emi_patternizer.client.mixin;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
-import io.github.linkfgfgui.emi_patternizer.Patternize;
+import io.github.linkfgfgui.emi_patternizer.client.Patternize;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

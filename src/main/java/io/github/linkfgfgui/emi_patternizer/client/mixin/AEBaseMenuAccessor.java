@@ -1,4 +1,4 @@
-package io.github.linkfgfgui.emi_patternizer.mixin;
+package io.github.linkfgfgui.emi_patternizer.client.mixin;
 
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantic;

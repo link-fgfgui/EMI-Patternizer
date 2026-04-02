@@ -1,4 +1,4 @@
-package io.github.linkfgfgui.emi_patternizer;
+package io.github.linkfgfgui.emi_patternizer.client;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -12,3 +12,4 @@ public class Config {
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 }
+

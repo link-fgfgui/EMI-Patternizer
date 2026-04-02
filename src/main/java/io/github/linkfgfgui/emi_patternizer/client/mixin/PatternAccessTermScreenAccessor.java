@@ -1,4 +1,4 @@
-package io.github.linkfgfgui.emi_patternizer.mixin;
+package io.github.linkfgfgui.emi_patternizer.client.mixin;
 
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.gui.me.patternaccess.PatternContainerRecord;
