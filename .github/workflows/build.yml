@@ -23,8 +23,6 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew build
-        env:
-          GITHUB_MAVEN_PAT: ${{ secrets.MAVEN_PAT_GITHUB }}
 
       - name: capture build artifact
         uses: actions/upload-artifact@v7
@@ -38,5 +36,6 @@ jobs:
         with:
           modrinth-id: 7FoirOzn
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: 1480670
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          game-versions: 1.21.1
