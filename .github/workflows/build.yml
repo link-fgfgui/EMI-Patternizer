@@ -45,17 +45,14 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-dependencies: |
             XxWD5pD3 | recommends | *
-
           curseforge-id: 1480670
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           curseforge-name: emi-patternizer-${{ github.ref_name }}
           curseforge-dependencies: |
             applied-energistics-2 | recommends | *
-          
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
           dependencies: |
             emi | depends | *
             refined-storage | recommends | *
             refined-storage-emi-integration | recommends | *
-
+          version-type: beta
