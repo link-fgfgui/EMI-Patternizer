@@ -19,6 +19,10 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
+      - name: Update mod_version in gradle.properties
+        if: startsWith(github.ref, 'refs/tags/')
+        run: sed -i 's/^mod_version=.*/mod_version=${{ github.ref_name }}/' gradle.properties
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
@@ -39,6 +43,19 @@ jobs:
         with:
           modrinth-id: 7FoirOzn
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-dependencies: |
+            XxWD5pD3 | recommends | *
+
           curseforge-id: 1480670
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-name: emi-patternizer-${{ github.ref_name }}
+          curseforge-dependencies: |
+            applied-energistics-2 | recommends | *
+          
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          dependencies: |
+            emi | depends | *
+            refined-storage | recommends | *
+            refined-storage-emi-integration | recommends | *
+
