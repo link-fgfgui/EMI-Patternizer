@@ -29,7 +29,9 @@ public class ReloadMemory {
                 minecraft.execute(() -> {
                     PatternCount = api.getPatternCount(level);
                     if (minecraft.player != null) {
-                        minecraft.player.sendSystemMessage(Component.translatable("chat.emi_patternizer.loaded", EncodedItems.size(), PatternCount));
+                        if (Config.IS_SHOW_LOAD_MESSAGE.getAsBoolean()) {
+                            minecraft.player.sendSystemMessage(Component.translatable("chat.emi_patternizer.loaded", EncodedItems.size(), PatternCount));
+                        }
                     }
                 });
             });
