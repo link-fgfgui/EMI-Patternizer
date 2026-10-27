@@ -42,13 +42,13 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: apehum/mc-publish@v1.2
         with:
-          modrinth-id: 7FoirOzn
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          modrinth-dependencies: |
-            emi | depends | *
-            XxWD5pD3 | recommends | *
-            refined-storage | recommends | *
-            refined-storage-emi-integration | recommends | *
+          # modrinth-id: 7FoirOzn
+          # modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          # modrinth-dependencies: |
+          #   emi | depends | *
+          #   XxWD5pD3 | recommends | *
+          #   refined-storage | recommends | *
+          #   refined-storage-emi-integration | recommends | *
           curseforge-id: 1480670
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           curseforge-name: emi-patternizer-${{ github.ref_name }}
@@ -58,4 +58,4 @@ jobs:
             refined-storage | recommends | *
             refined-storage-emi-integration | recommends | *
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          version-type: beta
+          version-type: alpha
