@@ -11,10 +11,10 @@ group = mod_group_id
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
+	maven {
+		name = "Sleeping Town"
+		url = "https://repo.sleeping.town/"
+	}
     maven {
         url "https://cursemaven.com"
     }
@@ -111,10 +111,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
-    compileOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "dev.emi:emi-neoforge:${emi_version}"
-    implementation "com.refinedmods.refinedstorage:refinedstorage-emi-integration-neoforge:${refinedstorage_emi_integration_version}"
-    implementation "com.refinedmods.refinedstorage:refinedstorage-neoforge:${refinedstorage_version}"
+    compileOnly "com.refinedmods.refinedstorage:refinedstorage-emi-integration-neoforge:${refinedstorage_emi_integration_version}"
+    compileOnly "com.refinedmods.refinedstorage:refinedstorage-neoforge:${refinedstorage_version}"
 
     runtimeOnly "curse.maven:powah-rearchitected-633483:7503293"
     runtimeOnly "curse.maven:cloth-config-348521:5729127"
