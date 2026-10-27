@@ -11,6 +11,7 @@ public class Config {
     public static final ModConfigSpec.BooleanValue IS_PLAY_SOUND = BUILDER.comment("Play a sound after recipe fill").translation("emi_patternizer.config.playsound").define("isPlaySound", true);
     public static final ModConfigSpec.BooleanValue IS_SIMULATE_CLICK = BUILDER.comment("Whether to simulate a encode button click").translation("emi_patternizer.config.simulate").define("isSimulateClick", false);
     public static final ModConfigSpec.BooleanValue IS_SHOW_LOAD_MESSAGE = BUILDER.comment("Whether to show the loaded message").translation("emi_patternizer.config.loaded").define("isShowLoaded", true);
+    public static final ModConfigSpec.BooleanValue PRELOAD_PATTERN_ACCESS = BUILDER.comment("Open and close a nearby pattern access terminal before opening a pattern encoding terminal, so the encoded pattern list is loaded").translation("emi_patternizer.config.preloadAccess").define("preloadPatternAccess", false);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 }

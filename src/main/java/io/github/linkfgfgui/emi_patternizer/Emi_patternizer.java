@@ -2,10 +2,12 @@ package io.github.linkfgfgui.emi_patternizer;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
+import io.github.linkfgfgui.emi_patternizer.intergrated.PatternAccessPreloader;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -35,6 +37,9 @@ public class Emi_patternizer {
         modEventBus.addListener(this::registerKeyMappings);
         NeoForge.EVENT_BUS.addListener(Patternize::onKeyPressed);
         NeoForge.EVENT_BUS.addListener(ReloadMemory::onScreenOpening);
+        if (ModList.get().isLoaded("ae2")) {
+            NeoForge.EVENT_BUS.addListener(PatternAccessPreloader::onClientTick);
+        }
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }

@@ -8,5 +8,6 @@
   "emi_patternizer.config.delay3": "Delay before read patterns from terminal (Unit: Millisecond)",
   "emi_patternizer.config.playsound": "Play a sound after recipe fill",
   "emi_patternizer.config.simulate": "Whether to simulate a encode button click",
-  "emi_patternizer.config.loaded": "Whether to show the loaded message"
+  "emi_patternizer.config.loaded": "Whether to show the loaded message",
+  "emi_patternizer.config.preloadAccess": "Open and close a nearby pattern access terminal before opening a pattern encoding terminal"
 }
