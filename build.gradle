@@ -35,7 +35,7 @@ base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 17 to end users in 1.20.1, so mods should target Java 17.
+// Minecraft 1.19.2 uses Java 17, so mods should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 legacyForge {
@@ -125,9 +125,9 @@ obfuscation {
 }
 
 dependencies {
-    modCompileOnly "appeng:appliedenergistics2-forge:15.4.10"
+    modCompileOnly "appeng:appliedenergistics2-forge:12.9.12"
 //    modImplementation "org.appliedenergistics:guideme:20.1.14"
-    modCompileOnly "dev.emi:emi-forge:1.1.22+1.20.1"
+    modCompileOnly "dev.emi:emi-forge:1.1.24+1.19.2"
 //    compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
 //
 //    implementation "io.github.llamalad7:mixinextras-forge:0.3.5"
