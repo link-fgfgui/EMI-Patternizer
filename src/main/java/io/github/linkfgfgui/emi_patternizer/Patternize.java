@@ -64,7 +64,7 @@ public class Patternize {
             });
             CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
-                    api.encode(isSimulateClick);
+                    api.encode(isSimulateClick, recipe);
                 });
                 CompletableFuture.delayedExecutor(delayPerOperation, TimeUnit.MILLISECONDS).execute(() ->
                         minecraft.execute(() ->

@@ -19,6 +19,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.startsWith("io.github.linkfgfgui.emi_patternizer.mixin.refinedstorage")) {
             return isModLoaded("refinedstorage");
         }
+        if (mixinClassName.startsWith("io.github.linkfgfgui.emi_patternizer.mixin.extendedae")) {
+            return isModLoaded("extendedae");
+        }
         return true;
     }
 

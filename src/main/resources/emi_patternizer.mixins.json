@@ -11,6 +11,7 @@
     "ae2.AEBaseMenuAccessor",
     "ae2.AEBaseScreenAccessor",
     "ae2.PatternAccessTermScreenAccessor",
+    "extendedae.GuiExPatternTerminalAccessor",
     "refinedstorage.PatternGridContainerMenuAccessor",
     "refinedstorage.PatternGridScreenAccessor",
     "refinedstorage.AutocrafterManagerContainerMenuAccessor"

@@ -1,5 +1,6 @@
 package io.github.linkfgfgui.emi_patternizer.intergrated;
 
+import dev.emi.emi.api.recipe.EmiRecipe;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.level.Level;
@@ -11,6 +12,8 @@ import java.util.Map;
 
 public interface Api {
     Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
+    String WCWT_SCREEN = "com.lhy.wcwt.client.WirelessComprehensiveWorkTerminalScreen";
+    String EXTENDEDAE_ACCESS_SCREEN = "com.glodblock.github.extendedae.client.gui.GuiExPatternTerminal";
 
     static boolean isInstanceOf(Object obj, String className) {
         if (obj == null) return false;
@@ -31,6 +34,8 @@ public interface Api {
      class INTEGRATED {
         public static boolean AE2;
         public static boolean RS;
+        public static boolean WCWT;
+        public static boolean EXTENDEDAE;
 
         static {
             ModList list = ModList.get();
@@ -39,12 +44,18 @@ public interface Api {
             } else if (list.isLoaded("refinedstorage_emi_integration")) {
                 RS = true;
             }
+            WCWT = list.isLoaded("wcwt");
+            EXTENDEDAE = list.isLoaded("extendedae");
         }
     }
 
 
     static Api getApi(AbstractContainerScreen<?> screen) {
-        if (INTEGRATED.AE2) {
+        if (INTEGRATED.WCWT && isInstanceOf(screen, WCWT_SCREEN)) {
+            return new wcwt(screen);
+        } else if (INTEGRATED.EXTENDEDAE && isInstanceOf(screen, EXTENDEDAE_ACCESS_SCREEN)) {
+            return new extendedae(screen);
+        } else if (INTEGRATED.AE2) {
             return new appliedenergistics2(screen);
         } else if (INTEGRATED.RS) {
             return new refinedstorage(screen);
@@ -54,7 +65,9 @@ public interface Api {
     }
 
     static boolean isValidEncodingScreen(Screen screen) {
-        if (INTEGRATED.AE2) {
+        if (INTEGRATED.WCWT && isInstanceOf(screen, WCWT_SCREEN)) {
+            return true;
+        } else if (INTEGRATED.AE2) {
             return isInstanceOf(screen, "appeng.client.gui.me.items.PatternEncodingTermScreen");
         } else if (INTEGRATED.RS) {
             return isInstanceOf(screen, "com.refinedmods.refinedstorage.common.autocrafting.patterngrid.PatternGridScreen");
@@ -62,7 +75,9 @@ public interface Api {
         return false;
     }
     static boolean isValidAccessScreen(Screen screen) {
-        if (INTEGRATED.AE2) {
+        if (INTEGRATED.EXTENDEDAE && isInstanceOf(screen, EXTENDEDAE_ACCESS_SCREEN)) {
+            return true;
+        } else if (INTEGRATED.AE2) {
             return isInstanceOf(screen, "appeng.client.gui.me.patternaccess.PatternAccessTermScreen");
         } else if (INTEGRATED.RS) {
             return isInstanceOf(screen, "com.refinedmods.refinedstorage.common.autocrafting.autocraftermanager.AutocrafterManagerScreen");
@@ -71,6 +86,10 @@ public interface Api {
     }
 
     void encode(boolean isSimulateClick);
+
+    default void encode(boolean isSimulateClick, EmiRecipe recipe) {
+        encode(isSimulateClick);
+    }
 
     int getEncodedPatternSlot();
 

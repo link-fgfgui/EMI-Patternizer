@@ -57,8 +57,11 @@ public class appliedenergistics2 implements Api {
 
     @Override
     public long getPatternCount(Level level) {
+        return countPatterns(((PatternAccessTermScreenAccessor) screen).getById().values(), level);
+    }
+
+    protected long countPatterns(Collection<PatternContainerRecord> patternContainerRecordSet, Level level) {
         AtomicLong PatternCount = new AtomicLong();
-        Collection<PatternContainerRecord> patternContainerRecordSet = ((PatternAccessTermScreenAccessor) screen).getById().values();
         for (PatternContainerRecord entry : patternContainerRecordSet) {
             entry.getInventory().toItemContainerContents().stream().forEach((item) -> {
                 IPatternDetails details = PatternDetailsHelper.decodePattern(item, level);
