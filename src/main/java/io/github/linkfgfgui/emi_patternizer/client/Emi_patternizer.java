@@ -2,7 +2,7 @@ package io.github.linkfgfgui.emi_patternizer.client;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import com.mojang.blaze3d.platform.InputConstants;
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import net.minecraftforge.api.ModLoadingContext;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -37,6 +37,6 @@ public class Emi_patternizer implements ClientModInitializer {
                 });
             }
         });
-        ForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, Config.SPEC);
+        ModLoadingContext.registerConfig(MOD_ID, ModConfig.Type.CLIENT, Config.SPEC);
     }
 }

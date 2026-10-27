@@ -12,17 +12,10 @@ base {
 
 
 repositories {
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
+    mavenCentral()
     maven {
         name = "Modmaven"
         url = "https://modmaven.dev/"
-    }
-    maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
     exclusiveContent {
         forRepository {
@@ -47,15 +40,15 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "dev.emi:emi-fabric:1.1.22+1.20.1"
-    modImplementation "appeng:appliedenergistics2-fabric:15.4.10"
-    modImplementation "teamreborn:energy:3.0.0" //why only AE2 causes NoClassDefFoundError
-    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.3"
-    modLocalRuntime "com.terraformersmc:modmenu:7.2.2"
-    modLocalRuntime "maven.modrinth:embeddium:0.3.25+mc1.20.1"
-    modLocalRuntime "maven.modrinth:powah:5.0.11-fabric"
-    modLocalRuntime "maven.modrinth:architectury-api:9.2.14+fabric"
-    modLocalRuntime "maven.modrinth:cloth-config:11.1.136+fabric"
+    modImplementation "maven.modrinth:emi:1.1.24+1.19.2+fabric"
+    modImplementation "appeng:appliedenergistics2-fabric:12.9.9"
+    modImplementation "teamreborn:energy:2.2.0" //why only AE2 causes NoClassDefFoundError
+    modApi "maven.modrinth:forge-config-api-port:4.2.11"
+    compileOnly "com.electronwill.night-config:core:3.6.5"
+    modLocalRuntime "maven.modrinth:modmenu:4.1.2"
+    modLocalRuntime "maven.modrinth:powah:4.0.11-fabric"
+    modLocalRuntime "maven.modrinth:architectury-api:6.6.92+fabric"
+    modLocalRuntime "maven.modrinth:cloth-config:8.3.134+fabric"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
