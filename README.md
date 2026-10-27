@@ -1,6 +1,8 @@
 EMI Patternizer
 ================
 
+The project is archived, because I don't understand why emi persist in using yarn, even in 26.1+.
+
 [![Modrinth](https://img.shields.io/modrinth/dt/emi-patternizer?logo=modrinth)](https://modrinth.com/mod/emi-patternizer)
 [![CurseForge](https://img.shields.io/curseforge/dt/1480670?logo=curseforge)](https://curseforge.com/minecraft/mc-mods/emi-patternizer)
 
