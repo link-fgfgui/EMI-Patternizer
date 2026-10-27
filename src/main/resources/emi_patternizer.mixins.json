@@ -9,7 +9,7 @@
     "AbstractContainerScreenMixin",
     "AEBaseMenuAccessor",
     "MinecraftMixin",
-    "PatternAccessTermScreenAccessor"
+    "InterfaceTerminalScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

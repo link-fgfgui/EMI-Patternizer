@@ -4,13 +4,12 @@ package io.github.linkfgfgui.emi_patternizer.client;
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.PatternEncodingTermMenu;
-import com.mojang.logging.LogUtils;
+import dev.emi.emi.EmiRecipeFiller;
+import dev.emi.emi.api.EmiFillAction;
 import dev.emi.emi.api.recipe.EmiRecipe;
-import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.bom.BoM;
 import dev.emi.emi.bom.MaterialNode;
-import dev.emi.emi.registry.EmiRecipeFiller;
 import io.github.linkfgfgui.emi_patternizer.client.mixin.AEBaseMenuAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -19,6 +18,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.ClickType;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 
 public class Patternize {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(Patternize.class);
     public static HashSet<String> EncodedItems = new HashSet<>();
     public static volatile boolean operating = false;
     static long delayPerOperation;
@@ -48,7 +48,7 @@ public class Patternize {
     public static void Encode(long initDelay, Minecraft minecraft, EmiRecipe recipe, PatternEncodingTermScreen<?> screen, PatternEncodingTermMenu menu, LocalPlayer player, MultiPlayerGameMode gameMode, int encodedPatternSlot) {
         CompletableFuture.delayedExecutor(initDelay, TimeUnit.MILLISECONDS).execute(() -> {
             minecraft.execute(() -> {
-                EmiRecipeFiller.performFill(recipe, screen, EmiCraftContext.Type.FILL_BUTTON, EmiCraftContext.Destination.NONE, 1);
+                EmiRecipeFiller.performFill(recipe, screen, EmiFillAction.FILL, 1);
                 if (isPlaySound) {
                     minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                 }

@@ -3,11 +3,11 @@ package io.github.linkfgfgui.emi_patternizer.client;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
-import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
-import appeng.client.gui.me.patternaccess.PatternContainerRecord;
-import io.github.linkfgfgui.emi_patternizer.client.mixin.PatternAccessTermScreenAccessor;
+import appeng.client.gui.me.interfaceterminal.InterfaceRecord;
+import appeng.client.gui.me.interfaceterminal.InterfaceTerminalScreen;
+import io.github.linkfgfgui.emi_patternizer.client.mixin.InterfaceTerminalScreenAccessor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class ReloadMemory {
 
     static long PatternCount = 0;
 
-    public static void onScreenOpening(PatternAccessTermScreen<?> screen) {
+    public static void onScreenOpening(InterfaceTerminalScreen<?> screen) {
         if (true) {
             EncodedItems.clear();
             Minecraft minecraft = Minecraft.getInstance();
@@ -31,8 +31,8 @@ public class ReloadMemory {
             CompletableFuture.delayedExecutor(delayBeforeRead, TimeUnit.MILLISECONDS).execute(() -> {
                 minecraft.execute(() -> {
                     PatternCount = 0;
-                    Collection<PatternContainerRecord> patternContainerRecordSet = ((PatternAccessTermScreenAccessor) screen).getById().values();
-                    for (PatternContainerRecord entry : patternContainerRecordSet) {
+                    Collection<InterfaceRecord> patternContainerRecordSet = ((InterfaceTerminalScreenAccessor) screen).getById().values();
+                    for (InterfaceRecord entry : patternContainerRecordSet) {
                         entry.getInventory().forEach((item) -> {
                             IPatternDetails details = PatternDetailsHelper.decodePattern(item, level);
                             PatternCount++;
@@ -47,7 +47,7 @@ public class ReloadMemory {
                         });
                     }
                     if (minecraft.player != null) {
-                        minecraft.player.sendSystemMessage(Component.translatable("chat.emi_patternizer.loaded", EncodedItems.size(), PatternCount));
+                        minecraft.player.displayClientMessage(new TranslatableComponent("chat.emi_patternizer.loaded", EncodedItems.size(), PatternCount), false);
                     }
                 });
             });
